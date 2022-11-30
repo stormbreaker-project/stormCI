@@ -9,7 +9,7 @@ clone:
   depth: 1
 
 steps:
-  - name: Setup
+  - name: Setup&Build
     image: ubuntu:18.04
     commands:
       - cd $HOME
@@ -17,11 +17,6 @@ steps:
       - git config --global user.name "danascape"
       - git config --global user.email "danascape@gmail.com"
       - git config --global color.ui false
-
-  - name: Sync Kernel
-    image: ubuntu:18.04
-    commands:
-      - cd $HOME
       - mkdir os && cd os
       - repo init -u https://github.com/StormBreaker-Infrastructure/kernel_manifest -b main --depth 1
       - repo sync
