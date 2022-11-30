@@ -13,6 +13,7 @@ steps:
     image: ubuntu:18.04
     commands:
       - cd $HOME
+      - apt update && apt-get install -y curl git
       - git config --global user.name "danascape"
       - git config --global user.email "danascape@gmail.com"
       - git config --global color.ui false
