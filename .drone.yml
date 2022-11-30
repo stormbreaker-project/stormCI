@@ -1,0 +1,19 @@
+kind: pipeline
+name: stormCI
+
+platform:
+  os: linux
+  arch: amd64
+
+clone:
+  depth: 1
+
+steps:
+  - name: Setup
+    image: ubuntu:18.04
+    commands:
+      - cd $HOME
+      - git config --global user.name "danascape"
+      - git config --global user.email "danascape@gmail.com"
+      - git config --global color.ui false
+      - curl https://raw.githubusercontent.com/akhilnarang/scripts/master/setup/android_build_env.sh | sh
