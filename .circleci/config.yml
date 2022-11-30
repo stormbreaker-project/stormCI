@@ -18,6 +18,9 @@ jobs:
            git config --global user.name "danascape"
            git config --global user.email "danascape@gmail.com"
            git config --global color.ui false
+           mkdir os && cd os
+           repo init -u https://github.com/StormBreaker-Infrastructure/kernel_manifest -b main --depth 1
+           repo sync
 
 workflows:
   version: 2.1
