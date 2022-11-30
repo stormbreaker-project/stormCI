@@ -22,6 +22,10 @@ jobs:
            curl https://raw.githubusercontent.com/akhilnarang/scripts/master/setup/android_build_env.sh | sh
            repo init -u https://github.com/StormBreaker-Infrastructure/kernel_manifest -b main --depth 1
            repo sync
+           source build/envsetup.sh
+           setupDevice X00P
+           buildDefconfig
+           buildKernelImage
 
 workflows:
   version: 2.1
