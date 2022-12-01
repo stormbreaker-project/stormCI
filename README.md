@@ -1,5 +1,7 @@
 <h1 align="center">StormBreaker CI</h1>
 
+[![CircleCI](https://dl.circleci.com/status-badge/img/gh/StormBreaker-Infrastructure/stormCI/tree/master.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/gh/StormBreaker-Infrastructure/stormCI/tree/master)
+
 # License
 ```xml
 Copyright 2019 danascape (Saalim Quadri)
