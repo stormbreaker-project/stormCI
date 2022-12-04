@@ -1,6 +1,9 @@
 FROM ubuntu:20.04
 LABEL maintainer="Saalim Quadri <danascape@gmail.com>"
 
+ENV USER=saalim \
+    HOSTNAME=StormCI
+
 # Install required dependencies
 RUN apt-get update && \
     apt-get install -y build-essential bc python curl \
