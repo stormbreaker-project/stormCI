@@ -13,6 +13,9 @@ RUN apt-get update && \
 # Create separate user
 RUN useradd -u 999 --shell /bin/bash --create-home -r -g sudo ${USER}
 
+# Allow sudo without password for build user
+RUN echo "${USER} ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/docker-build
+
 USER ${USER}
 
 CMD ["bash"]
