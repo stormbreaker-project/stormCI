@@ -2,6 +2,7 @@
 
 <p align="center">
    <a href="https://dl.circleci.com/status-badge/redirect/gh/StormBreaker-Infrastructure/stormCI/tree/master"><img src="https://dl.circleci.com/status-badge/img/gh/StormBreaker-Infrastructure/stormCI/tree/master.svg?style=svg"></a><br>
+   <a href="https://opensource.org/licenses/Apache-2.0"><img alt="License" src="https://img.shields.io/badge/License-Apache%202.0-blue.svg"/></a>
 </p>
 
 # License
