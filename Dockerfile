@@ -8,6 +8,6 @@ ENV USER=saalim \
 RUN apt-get update && \
     apt-get install -y build-essential bc python curl \
     git zip ftp gcc-aarch64-linux-gnu gcc-arm-linux-gnueabi \
-    libssl-dev lftp zstd wget libfl-dev clang flex bison cpio
+    libssl-dev lftp zstd wget libfl-dev clang flex bison cpio sudo
 
 CMD ["bash"]
