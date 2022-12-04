@@ -13,4 +13,6 @@ RUN apt-get update && \
 # Create separate user
 RUN useradd -u 999 --shell /bin/bash --create-home -r -g sudo ${USER}
 
+USER ${USER}
+
 CMD ["bash"]
