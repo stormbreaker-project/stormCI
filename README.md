@@ -1,7 +1,7 @@
 <h1 align="center">StormBreaker CI</h1>
 
 <p align="center">
-[![CircleCI](https://dl.circleci.com/status-badge/img/gh/StormBreaker-Infrastructure/stormCI/tree/master.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/gh/StormBreaker-Infrastructure/stormCI/tree/master)
+   <a href="https://dl.circleci.com/status-badge/redirect/gh/StormBreaker-Infrastructure/stormCI/tree/master"><img src="https://dl.circleci.com/status-badge/img/gh/StormBreaker-Infrastructure/stormCI/tree/master.svg?style=svg"></a><br>
 </p>
 
 # License
