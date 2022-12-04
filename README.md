@@ -5,6 +5,14 @@
    <a href="https://opensource.org/licenses/Apache-2.0"><img alt="License" src="https://img.shields.io/badge/License-Apache%202.0-blue.svg"/></a>
 </p>
 
+### Deploying and running our container
+To create and run our container, we can use the following command syntax:
+
+```
+docker-compose -f "docker-compose.yml" up -d --build
+docker-compose exec build-kernel bash
+```
+
 # License
 ```xml
 Copyright 2019 danascape (Saalim Quadri)
