@@ -2,7 +2,7 @@ version: '3'
 
 services:
     build-kernel:
-        image: ubuntu:20.04
+        image: ghcr.io/stormbreaker-infrastructure/docker-stormci/kernel-build:latest
         container_name: kernel-buildsystem
         hostname: StormCI
         stdin_open: true
