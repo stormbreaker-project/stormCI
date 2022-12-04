@@ -10,4 +10,7 @@ RUN apt-get update && \
     git zip ftp gcc-aarch64-linux-gnu gcc-arm-linux-gnueabi \
     libssl-dev lftp zstd wget libfl-dev clang flex bison cpio sudo
 
+# Create separate user
+RUN useradd -u 999 --shell /bin/bash --create-home -r -g sudo ${USER}
+
 CMD ["bash"]
