@@ -6,7 +6,7 @@
 </p>
 
 For documentation on how to run a build, see
-<a alt="Usage" href="Documentation/Usage.txt">Usage.txt</a><br>
+<a alt="Usage" href="Documentation/Usage.md">Usage.md</a><br>
 
 ### Deploying and running our container
 To create and run our container, we can use the following command syntax:
