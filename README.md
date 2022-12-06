@@ -5,6 +5,9 @@
    <a href="https://opensource.org/licenses/Apache-2.0"><img alt="License" src="https://img.shields.io/badge/License-Apache%202.0-blue.svg"/></a>
 </p>
 
+For documentation on how to run a build, see
+<a alt="Usage" href="Documentation/Usage.txt">Usage.txt</a><br>
+
 ### Deploying and running our container
 To create and run our container, we can use the following command syntax:
 
