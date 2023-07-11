@@ -72,48 +72,11 @@ set_build_variables() {
     clone_device
 }
 
-# Clone the device repository
-clone_device() {
-    GITHUB_ORG_lINK="https://github.com/stormbreaker-project"
-    echo "Cloning device repository"
-    git clone --depth=1 $GITHUB_ORG_lINK/$DEVICE $DEVICE  >/dev/null 2>&1 || cloneError
-    if [[ -f $DEVICE/Makefile ]]; then
-        kernelVersion
-        triggerBuild
-    else
-        echo ""
-        echo "Something went wrong while cloning."
-        echo ""
-    fi
-}
-
 kernelVersion() {
-	KERNEL_VERSION="$( cat $DEVICE/Makefile | grep VERSION | head -n 1 | sed "s|.*=||1" | sed "s| ||g" )"
+    KERNEL_VERSION="$( cat $DEVICE/Makefile | grep VERSION | head -n 1 | sed "s|.*=||1" | sed "s| ||g" )"
     KERNEL_PATCHLEVEL="$( cat $DEVICE/Makefile | grep PATCHLEVEL | head -n 1 | sed "s|.*=||1" | sed "s| ||g" )"
     VERSION="${KERNEL_VERSION}.${KERNEL_PATCHLEVEL}"
     echo $VERSION
-
-}
-
-cloneGCC() {
-	git clone --depth=1 https://github.com/stormbreaker-project/aarch64-linux-android-4.9 $TC_DIR/gcc >/dev/null 2>&1
-	git clone --depth=1 https://github.com/stormbreaker-project/arm-linux-androideabi-4.9 $TC_DIR/gcc_32 >/dev/null 2>&1
-}
-
-cloneClang11() {
-    git clone --depth=1 -b aosp-11.0.5 https://github.com/sohamxda7/llvm-stable $TC_DIR/clang >/dev/null 2>&1
-	export KBUILD_COMPILER_STRING="$(${TC_DIR}/clang/bin/clang --version | head -n 1 | sed -e 's/  */ /g' -e 's/[[:space:]]*$//'))"
-}
-
-cloneCompiler() {
-    TC_DIR=$CURRENT_DIR
-    echo "Cloning Compilers"
-    cloneGCC
-    cloneClang11
-    echo "Setting up PATH"
-    PATH="${TC_DIR}/clang/bin:${TC_DIR}/gcc/bin:${TC_DIR}/gcc_32/bin:${PATH}"
-    echo KBUILD_COMPILER_STRING
-    $CURRENT_DIR/clang/bin/clang --version
 }
 
 buildFail() {
@@ -165,10 +128,6 @@ genJSON() {
     fi
     echo "$GEN_JSON_BODY" >> json/$DEVICE.json
     exit 0
-}
-
-cloneError() {
-    echo "Clone Failed!"
 }
 
 triggerBuild() {
