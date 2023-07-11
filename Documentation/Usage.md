@@ -1,3 +1,0 @@
-## StormCI
-* The Repository consists of the scripts that fetches the json from the input target repository and stores them under `commit-id` to avoid any incremental build for the same target in the future until there is an update in the specified repository.
-* The scripts currently uses its own build commands, and will be going to be deprecated soon in the favor of https://github.com/danascape/stormCI/issues/3
