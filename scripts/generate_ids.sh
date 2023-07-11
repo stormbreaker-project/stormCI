@@ -19,6 +19,9 @@ REPOS="
 	linux-asus-X01AD
 	"
 
+# Remove previous ids
+rm -rf $CI_PATH/commit-id/*
+
 generate_commit_id()
 {
 	for repo in $REPOS; do
