@@ -14,9 +14,6 @@ KBUILD_BUILD_USER="StormCI"
 # Scripts Path
 CI_PATH="$HOME/workspace/stormCI"
 
-# Device List
-DEVICE="X00P X01AD"
-
 # Workspace Path
 WORKSPACE_PATH="$HOME/workspace/artemis"
 
@@ -129,10 +126,8 @@ triggerBuild() {
 	local device=$1
     echo "Starting Build"
     START=$(date +"%s")
-    for device in $DEVICE; do
 	    cd $WORKSPACE_PATH/linux*$device*
 	    sw b $device
-    done
 }
 
 compare_commit_id
