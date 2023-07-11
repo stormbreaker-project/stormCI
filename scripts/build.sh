@@ -6,14 +6,16 @@
 # SPDX-License-Identifier: Apache-2.0 license
 #
 
-# Exit is nothing is set
-[[ $# = 0 ]] && echo "No Device Input" && exit 1
-
 # Set Variables
-# Common vars
+# Compile Time
 KBUILD_BUILD_HOST="Stormbot"
 KBUILD_BUILD_USER="StormCI"
-DEVICE="$1"
+
+# Device List
+DEVICE="X00P X01AD"
+
+# Workspace Path
+WORKSPACE_PATH="$HOME/workspace/artemis"
 
 fetch-commit-id() {
     echo "Checking commit-id of $DEVICE"
@@ -170,11 +172,12 @@ cloneError() {
 }
 
 triggerBuild() {
-    cloneCompiler
     echo "Starting Build"
-    cd $BUILD_DIR
     START=$(date +"%s")
-    sw b $DEVICE
+    for device in $DEVICE; do
+	    cd $WORKSPACE_PATH/linux*$device*
+	    sw b $device
+    done
 }
 
-fetch-commit-id
+triggerBuild
