@@ -15,11 +15,14 @@ ORG_URL="https://github.com/stormbreaker-project"
 
 # Repositories
 REPOS="
-	linux-asus-x00p-3.18
-	linux-asus-x01ad
+	linux-asus-X00P-3.18
+	linux-asus-X01AD
 	"
+
+# Clean up old repositories
+rm -rf $WORKSPACE_PATH/*
 
 # Clone repositories
 for repo in $REPOS; do
-    git clone -b master $ORG_URL/$repo $WORKSPACE_PATH/$repo
+    git clone --depth 1 -b master $ORG_URL/$repo $WORKSPACE_PATH/$repo
 done
