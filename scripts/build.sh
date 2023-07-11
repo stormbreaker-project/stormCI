@@ -11,56 +11,50 @@
 KBUILD_BUILD_HOST="Stormbot"
 KBUILD_BUILD_USER="StormCI"
 
+# Scripts Path
+CI_PATH="$HOME/workspace/stormCI"
+
 # Device List
 DEVICE="X00P X01AD"
 
 # Workspace Path
 WORKSPACE_PATH="$HOME/workspace/artemis"
 
-fetch-commit-id() {
+# Organization URL
+ORG_URL="https://github.com/stormbreaker-project"
+
+# Repositories
+REPOS="
+	linux-asus-X00P-3.18
+	linux-asus-X01AD
+	"
+
+compare_commit_id() {
     echo "Checking commit-id of $DEVICE"
     echo "Fetching remote information of the device"
-    COMMIT_ID_FETCH=$(git ls-remote https://github.com/stormbreaker-project/$DEVICE | head -1 | cut -f -1)
-    if [[ $COMMIT_ID_FETCH == "" ]]; then
-        echo "Warning: Fetched commit id is empty!"
-        echo "Did you enter the correct device name?"
-    else
-        compare-commit-id
-    fi
-}
-
-compare-commit-id() {
-    if [[ -f commit-id/$DEVICE-id ]]; then
-		PREVIOUS_COMMIT_ID=$(cat commit-id/$DEVICE-id)
-        rm commit-id/$DEVICE-id
-        if [[ $PREVIOUS_COMMIT_ID == "" ]]; then
-            echo ""
-            echo "Warning: The cached commit-id is empty"
-            echo "Did something went wrong?"
-            echo "Removing the saved commit-id"
-            echo ""
-            rm commit-id/$DEVICE-id
-        elif [ $COMMIT_ID_FETCH = $PREVIOUS_COMMIT_ID ]; then
-            echo ""
-            echo "No need to trigger the build"
-            echo "If this is your first time triggering for a device"
-            echo "Kindly push a commit to your kernel source."
-            echo ""
-        else
-            echo ""
-            echo "Triggering the build for $DEVICE"
-            echo "$COMMIT_ID_FETCH" >> commit-id/$DEVICE-id
-            set_build_variables
+    for repo in $REPOS; do
+	    COMMIT_ID=$(git ls-remote $ORG_URL/$repo | head -1 | cut -f -1)
+	    if [[ $COMMIT_ID == "" ]]; then
+		    echo "Warning: Fetched commit id is empty!"
+		    echo "Did you enter the correct device name?"
+	    else
+		    PREVIOUS_COMMIT_ID=$(cat $CI_PATH/commit-id/$repo-id)
+		    if [[ $PREVIOUS_COMMIT_ID == "" ]]; then
+			    echo ""
+			    echo "Warning: The cached commit-id is empty"
+			    echo "Warning: Contact admin to generate the id"
+		    elif [[ $COMMIT_ID = $PREVIOUS_COMMIT_ID ]]; then
+			    echo ""
+			    echo "Warning: No need to trigger the build"
+			    echo "Warning: Check CI page to find builds"
+			    echo ""
+		    else
+			    DEVICE=$(echo $repo | cut -d'-' -f3)
+			    echo "Triggering build for $DEVICE"
+		    fi
+		    
 	    fi
-    else
-        echo ""
-        echo "Warning: No previous configuration Found!"
-        echo "Kindly push a commit to your kernel source."
-        echo "Re-trigger the script after this step."
-        echo "This is added to ensure no issues in script arguments."
-        echo ""
-        echo "$COMMIT_ID_FETCH" >> commit-id/$DEVICE-id
-	fi
+    done
 }
 
 # Set repository variables
@@ -139,4 +133,4 @@ triggerBuild() {
     done
 }
 
-triggerBuild
+compare_commit_id
