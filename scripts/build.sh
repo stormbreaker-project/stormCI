@@ -51,6 +51,7 @@ compare_commit_id() {
 		    else
 			    DEVICE=$(echo $repo | cut -d'-' -f3)
 			    echo "Triggering build for $DEVICE"
+			    triggerBuild $DEVICE
 		    fi
 		    
 	    fi
@@ -125,6 +126,7 @@ genJSON() {
 }
 
 triggerBuild() {
+	local device=$1
     echo "Starting Build"
     START=$(date +"%s")
     for device in $DEVICE; do
