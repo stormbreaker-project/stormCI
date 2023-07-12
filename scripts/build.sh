@@ -37,6 +37,11 @@ MSM8953_DEVICES="
 	vince
 	"
 
+# Sync with Telegram
+USE_TELEGRAM="1"
+
+source "$WORKSPACE_DIR"/scripts/ci_telegram.sh
+
 compare_commit_id() {
     echo "Checking commit-id of $DEVICE"
     echo "Fetching remote information of the device"
