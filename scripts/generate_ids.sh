@@ -8,7 +8,7 @@
 
 # Set Variables
 # Scripts Path
-CI_PATH="$HOME/workspace/stormCI"
+CI_PATH="$HOME/stormCI"
 
 # Organization URL
 ORG_URL="https://github.com/stormbreaker-project"

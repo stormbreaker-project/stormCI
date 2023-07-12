@@ -12,10 +12,10 @@ KBUILD_BUILD_HOST="Stormbot"
 KBUILD_BUILD_USER="StormCI"
 
 # Scripts Path
-CI_PATH="$HOME/workspace/stormCI"
+CI_PATH="$HOME/stormCI"
 
 # Workspace Path
-WORKSPACE_PATH="$HOME/workspace/artemis"
+WORKSPACE_PATH="$HOME/builds"
 
 # Organization URL
 ORG_URL="https://github.com/stormbreaker-project"

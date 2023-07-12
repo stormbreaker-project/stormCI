@@ -8,7 +8,7 @@
 
 # Set Variables
 # Workspace Path
-WORKSPACE_PATH="$HOME/workspace/artemis"
+WORKSPACE_PATH="$HOME/builds"
 
 # Organization URL
 ORG_URL="https://github.com/stormbreaker-project"
