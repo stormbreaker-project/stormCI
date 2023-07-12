@@ -59,11 +59,11 @@ compare_commit_id() {
 				    echo "Triggering multiple builds!"
 				    for device in $MSM8953_DEVICES; do
 					    echo "Triggering build for $device"
-					    triggerBuild $DEVICE $device
+					    kernel_build $DEVICE $device
 				    done
 			    else
 				    echo "Triggering build for $DEVICE"
-				    triggerBuild $DEVICE
+				    kernel_build $DEVICE
 			    fi
 		    fi
 		    
@@ -138,7 +138,7 @@ genJSON() {
     exit 0
 }
 
-triggerBuild() {
+kernel_build() {
 	if [[ $1 == "msm8953" ]]; then
 		local chipset=$1
 		local device=$2
