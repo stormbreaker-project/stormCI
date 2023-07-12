@@ -38,9 +38,9 @@ MSM8953_DEVICES="
 	"
 
 # Sync with Telegram
-USE_TELEGRAM="1"
+USE_TELEGRAM="0"
 
-if [[ -n $USE_TELEGRAM ]]; then
+if [[ $USE_TELEGRAM == "1" ]]; then
 	source "$CI_PATH"/scripts/ci_telegram.sh
 else
 	source "$CI_PATH"/scripts/ci_terminal.sh
@@ -52,8 +52,10 @@ compare_commit_id() {
     for repo in $REPOS; do
 	    COMMIT_ID=$(git ls-remote $ORG_URL/$repo | head -1 | cut -f -1)
 	    if [[ $COMMIT_ID == "" ]]; then
+		    echo ""
 		    echo "Warning: Fetched commit id is empty!"
 		    echo "Did you enter the correct device name?"
+		    echo ""
 	    else
 		    PREVIOUS_COMMIT_ID=$(cat $CI_PATH/commit-id/$repo-id)
 		    if [[ $PREVIOUS_COMMIT_ID == "" ]]; then
@@ -97,15 +99,17 @@ kernelVersion() {
 }
 
 buildFail() {
+	local DEVICE="$1"
     BUILD_FAIL=true
     setStatus
-    genJSON
+    genJSON $DEVICE
 }
 
 buildPass() {
+	local DEVICE="$1"
     BUILD_PASS=true
     setStatus
-    genJSON
+    genJSON $DEVICE
 }
 
 setStatus() {
@@ -119,31 +123,26 @@ setStatus() {
 }
 
 genJSON() {
+	local DEVICE=$1
     END=$(date +"%s")
     DIFF=$(($END - $START))
     echo $DIFF
     echo "Generating JSON"
-    BRANCH="main" # Default branch of the repositories
+    BRANCH="master" # Default branch of the repositories
     # TIME="$((SECONDS / 60)) minute(s) and $((SECONDS % 60)) second(s)"
     TIME="$DIFF seconds"
-    COMMIT_ID=$(git log --oneline -1 | cut -f 1 -d " ")
-    MESSAGE=$(git log --format=%B -n 1 HEAD)
-    COMPILER_VERSION=$(${TC_DIR}/clang/bin/clang --version | head -n 1 | cut -f6,8 -d " ")
     GEN_JSON_BODY=$(jq --null-input \
                     --arg device "$DEVICE" \
                     --arg branch "$BRANCH" \
                     --arg status "$STATUS" \
                     --arg build "$TIME" \
-                    --arg commit "$COMMIT_ID" \
-                    --arg message "$MESSAGE" \
-                    --arg compiler "$COMPILER_VERSION" \
-                    "{"device": \"$DEVICE\", "branch": \"$BRANCH\", "status": \"$STATUS\", "time": \"$TIME\", "commit": \"$COMMIT_ID\", "messsage": \"$MESSAGE\", "compiler": \"$COMPILER_VERSION\"}")
+                    "{"device": \"$DEVICE\", "branch": \"$BRANCH\", "status": \"$STATUS\", "time": \"$TIME\"}")
     echo $GEN_JSON_BODY
     cd $CURRENT_DIR
-    if [[ -f json/$DEVICE.json ]]; then
-        rm json/$DEVICE.json
+    if [[ -f "$CI_PATH"/json/$DEVICE.json ]]; then
+        rm "$CI_PATH"json/$DEVICE.json
     fi
-    echo "$GEN_JSON_BODY" >> json/$DEVICE.json
+    echo "$GEN_JSON_BODY" >> "$CI_PATH"/json/$DEVICE.json
     exit 0
 }
 
@@ -154,13 +153,15 @@ kernel_build() {
 		echo "Triggering build for $chipset and $device"
 		START=$(date +"%s")
 		cd $WORKSPACE_PATH/linux*$chipset*
-		sw b $device
+		sw b $device || buildFail $device
+		buildPass $device
 	else
 		local device=$1
 		echo "Starting Build"
 		START=$(date +"%s")
 		cd $WORKSPACE_PATH/linux*$device*
-		sw b $device
+		sw b $device || buildFail $device
+		buildPass $device
 	fi
 }
 
