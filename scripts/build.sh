@@ -77,7 +77,6 @@ compare_commit_id() {
 				    kernel_build $DEVICE
 			    fi
 		    fi
-		    
 	    fi
     done
 }
@@ -126,7 +125,6 @@ genJSON() {
 	local DEVICE=$1
     END=$(date +"%s")
     DIFF=$(($END - $START))
-    echo $DIFF
     echo "Generating JSON"
     BRANCH="master" # Default branch of the repositories
     # TIME="$((SECONDS / 60)) minute(s) and $((SECONDS % 60)) second(s)"
@@ -140,28 +138,53 @@ genJSON() {
     echo $GEN_JSON_BODY
     cd $CURRENT_DIR
     if [[ -f "$CI_PATH"/json/$DEVICE.json ]]; then
-        rm "$CI_PATH"json/$DEVICE.json
+        rm "$CI_PATH"/json/$DEVICE.json
     fi
     echo "$GEN_JSON_BODY" >> "$CI_PATH"/json/$DEVICE.json
-    exit 0
+}
+
+check_kernel_image() {
+	base_path="$1"
+	local matching_directories=($base_path)
+
+	if [ ${#matching_directories[@]} -gt 0 ]; then
+		for directory in "${matching_directories[@]}"; do
+			  if ls "$directory/out/arch/arm64/boot/Image" 1>/dev/null 2>&1; then
+				  echo "true"
+			  else
+				  echo "false"
+			  fi
+		done
+	else
+		echo "error: No directories matching the pattern exist."
+	fi
 }
 
 kernel_build() {
 	if [[ $1 == "msm8953" ]]; then
 		local chipset=$1
-		local device=$2
-		echo "Triggering build for $chipset and $device"
+		device=$2
 		START=$(date +"%s")
 		cd $WORKSPACE_PATH/linux*$chipset*
-		sw b $device || buildFail $device
-		buildPass $device
+		sw b $device
+		buildStatus=$(check_kernel_image $WORKSPACE_PATH/linux*$chipset*)
+		case "$buildStatus" in
+			*true) buildPass $device ;;
+			true*) buildPass $device ;;
+			*true*) buildPass $device ;;
+			*) buildFail $device ;;
+		esac
 	else
 		local device=$1
-		echo "Starting Build"
 		START=$(date +"%s")
 		cd $WORKSPACE_PATH/linux*$device*
-		sw b $device || buildFail $device
-		buildPass $device
+		sw b $device
+		buildStatus=$(check_kernel_image $WORKSPACE_PATH/linux*$device*)
+		if [[ $buildStatus == "true" ]]; then
+			buildPass $device
+		else
+			buildFail $device
+		fi
 	fi
 }
 
