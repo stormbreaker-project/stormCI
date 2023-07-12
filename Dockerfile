@@ -8,7 +8,8 @@ ENV USER=saalim \
 RUN apt-get update && \
     apt-get install -y build-essential bc python curl \
     git zip ftp gcc-aarch64-linux-gnu gcc-arm-linux-gnueabi \
-    libssl-dev lftp zstd wget libelf-dev libfl-dev clang flex bison cpio sudo
+    libssl-dev lftp zstd wget libelf-dev libfl-dev clang flex bison cpio sudo \
+    jq shellcheck
 
 # Create separate user
 RUN useradd -u 999 --shell /bin/bash --create-home -r -g sudo ${USER}
