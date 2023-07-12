@@ -24,6 +24,7 @@ ORG_URL="https://github.com/stormbreaker-project"
 REPOS="
 	linux-asus-X00P-3.18
 	linux-asus-X01AD
+	linux-oneplus-billie
 	"
 
 compare_commit_id() {
