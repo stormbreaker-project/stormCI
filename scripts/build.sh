@@ -98,28 +98,18 @@ kernelVersion() {
     echo $VERSION
 }
 
-buildFail() {
-	local DEVICE="$1"
-    BUILD_FAIL=true
-    setStatus
-    genJSON $DEVICE
-}
-
-buildPass() {
-	local DEVICE="$1"
-    BUILD_PASS=true
-    setStatus
-    genJSON $DEVICE
-}
-
-setStatus() {
-    if [[ "$BUILD_FAIL" == "true" ]]; then
-        STATUS="Failed"
-    elif [[ "$BUILD_PASS" == "true" ]]; then
+set_build_status() {
+	local status="$2"
+	local device="$1"
+    if [[ "$status" == "pass" ]]; then
         STATUS="Passing"
+    elif [[ "$status" == "fail" ]]; then
+        STATUS="Failed"
     else
-        STATUS="Undefined"
+        STATUS="Unknown"
     fi
+    genJSON $device
+    unset STATUS
 }
 
 genJSON() {
@@ -150,7 +140,8 @@ check_kernel_image() {
 
 	if [ ${#matching_directories[@]} -gt 0 ]; then
 		for directory in "${matching_directories[@]}"; do
-			  if ls "$directory/out/arch/arm64/boot/Image" 1>/dev/null 2>&1; then
+			#echo $directory
+			  if [[ -f "$directory/out/arch/arm64/boot/Image" ]]; then
 				  echo "true"
 			  else
 				  echo "false"
@@ -168,12 +159,13 @@ kernel_build() {
 		START=$(date +"%s")
 		cd $WORKSPACE_PATH/linux*$chipset*
 		sw b $device
-		buildStatus=$(check_kernel_image $WORKSPACE_PATH/linux*$chipset*)
+		buildStatus=$(check_kernel_image $WORKSPACE_PATH/linux*$chipset)
+		echo "lahjsdasjklhdasjkhd"
+		buildStatus=$(echo "$buildStatus" | tr -d '[:space:]')
 		case "$buildStatus" in
-			*true) buildPass $device ;;
-			true*) buildPass $device ;;
-			*true*) buildPass $device ;;
-			*) buildFail $device ;;
+			true) set_build_status $device pass;;
+			false) set_build_status $device fail;;
+			*) echo "error: Unknown status"
 		esac
 	else
 		local device=$1
@@ -181,10 +173,12 @@ kernel_build() {
 		cd $WORKSPACE_PATH/linux*$device*
 		sw b $device
 		buildStatus=$(check_kernel_image $WORKSPACE_PATH/linux*$device*)
+		buildStatus=$(echo "$buildStatus" | tr -d '[:space:]')
+		echo $buildStatus
 		if [[ $buildStatus == "true" ]]; then
-			buildPass $device
+			set_build_status $device pass
 		else
-			buildFail $device
+			set_build_status $device fail
 		fi
 	fi
 }
