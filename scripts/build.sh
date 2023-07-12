@@ -40,7 +40,11 @@ MSM8953_DEVICES="
 # Sync with Telegram
 USE_TELEGRAM="1"
 
-source "$WORKSPACE_DIR"/scripts/ci_telegram.sh
+if [[ -n $USE_TELEGRAM ]]; then
+	source "$CI_PATH"/scripts/ci_telegram.sh
+else
+	source "$CI_PATH"/scripts/ci_terminal.sh
+fi
 
 compare_commit_id() {
     echo "Checking commit-id of $DEVICE"
@@ -63,11 +67,11 @@ compare_commit_id() {
 				    local chipset="$DEVICE"
 				    echo "Triggering multiple builds!"
 				    for device in $MSM8953_DEVICES; do
-					    echo "Triggering build for $device"
+					    sendMessage "Triggering build for $device"
 					    kernel_build $DEVICE $device
 				    done
 			    else
-				    echo "Triggering build for $DEVICE"
+				    sendMessage "Triggering build for $DEVICE"
 				    kernel_build $DEVICE
 			    fi
 		    fi
