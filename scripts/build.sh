@@ -40,10 +40,6 @@ compare_commit_id() {
 			    echo ""
 			    echo "Warning: The cached commit-id is empty"
 			    echo "Warning: Contact admin to generate the id"
-		    elif [[ $COMMIT_ID = $PREVIOUS_COMMIT_ID ]]; then
-			    echo ""
-			    echo "Warning: No need to trigger the build"
-			    echo "Warning: Check CI page to find builds"
 			    echo ""
 		    else
 			    DEVICE=$(echo $repo | cut -d'-' -f3)
