@@ -25,6 +25,16 @@ REPOS="
 	linux-asus-X00P-3.18
 	linux-asus-X01AD
 	linux-oneplus-billie
+	linux-xiaomi-msm8953
+	"
+
+# MSM8953 Devices
+MSM8953_DEVICES="
+	daisy
+	mido
+	sakura
+	tissot
+	vince
 	"
 
 compare_commit_id() {
@@ -44,8 +54,17 @@ compare_commit_id() {
 			    echo ""
 		    else
 			    DEVICE=$(echo $repo | cut -d'-' -f3)
-			    echo "Triggering build for $DEVICE"
-			    triggerBuild $DEVICE
+			    if [[ $DEVICE == "msm8953" ]]; then
+				    local chipset="$DEVICE"
+				    echo "Triggering multiple builds!"
+				    for device in $MSM8953_DEVICES; do
+					    echo "Triggering build for $device"
+					    triggerBuild $DEVICE $device
+				    done
+			    else
+				    echo "Triggering build for $DEVICE"
+				    triggerBuild $DEVICE
+			    fi
 		    fi
 		    
 	    fi
@@ -120,11 +139,20 @@ genJSON() {
 }
 
 triggerBuild() {
-	local device=$1
-    echo "Starting Build"
-    START=$(date +"%s")
-	    cd $WORKSPACE_PATH/linux*$device*
-	    sw b $device
+	if [[ $1 == "msm8953" ]]; then
+		local chipset=$1
+		local device=$2
+		echo "Triggering build for $chipset and $device"
+		START=$(date +"%s")
+		cd $WORKSPACE_PATH/linux*$chipset*
+		sw b $device
+	else
+		local device=$1
+		echo "Starting Build"
+		START=$(date +"%s")
+		cd $WORKSPACE_PATH/linux*$device*
+		sw b $device
+	fi
 }
 
 compare_commit_id
