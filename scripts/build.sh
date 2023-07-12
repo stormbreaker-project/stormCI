@@ -35,6 +35,7 @@ MSM8953_DEVICES="
 	sakura
 	tissot
 	vince
+	ysl
 	"
 
 # Sync with Telegram
