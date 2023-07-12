@@ -1,0 +1,56 @@
+[
+  {
+    "device": "billie",
+    "branch": "master",
+    "status": "Failed",
+    "time": "1 seconds"
+  },
+  {
+    "device": "daisy",
+    "branch": "master",
+    "status": "Passing",
+    "time": "120 seconds"
+  },
+  {
+    "device": "mido",
+    "branch": "master",
+    "status": "Failed",
+    "time": "20 seconds"
+  },
+  {
+    "device": "sakura",
+    "branch": "master",
+    "status": "Passing",
+    "time": "27 seconds"
+  },
+  {
+    "device": "tissot",
+    "branch": "master",
+    "status": "Passing",
+    "time": "26 seconds"
+  },
+  {
+    "device": "vince",
+    "branch": "master",
+    "status": "Passing",
+    "time": "28 seconds"
+  },
+  {
+    "device": "X00P",
+    "branch": "master",
+    "status": "Passing",
+    "time": "60 seconds"
+  },
+  {
+    "device": "X01AD",
+    "branch": "master",
+    "status": "Failed",
+    "time": "1 seconds"
+  },
+  {
+    "device": "ysl",
+    "branch": "master",
+    "status": "Passing",
+    "time": "28 seconds"
+  }
+]
