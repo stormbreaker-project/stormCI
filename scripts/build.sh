@@ -38,6 +38,12 @@ MSM8953_DEVICES="
 	ysl
 	"
 
+# Check if sworkflow is installed
+if [[ -z "$(which sw)" ]]; then
+	echo "Install sworkflow!"
+	exit 1
+fi
+
 # Sync with Telegram
 USE_TELEGRAM="0"
 
